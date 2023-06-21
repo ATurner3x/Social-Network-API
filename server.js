@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
 
-
+//start server
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
