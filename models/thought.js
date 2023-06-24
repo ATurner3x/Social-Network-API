@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Reaction = require('./reaction');
 
 // import schema from mongoose
 const { Schema } = mongoose;
