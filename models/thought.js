@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
+// import schema from mongoose
 const { Schema } = mongoose;
+
+//  create thought schema
 
 const ThoughtSchema = new Schema({
   thoughtText: {
@@ -39,3 +42,13 @@ const ThoughtSchema = new Schema({
     },
   ],
 });
+
+// get total count of reactions on retrieval
+
+ThoughtSchema.virtual('reactionCount').get(function () {
+    return this.reactions.length;
+  });
+  
+  const Thought = mongoose.model('Thought', ThoughtSchema);
+  
+  module.exports = Thought;
