@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/ATurner3x/Social-Network-API#readme",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mongoose": "^7.3.0"
+    "mongoose": "^7.3.1"
   }
 }
