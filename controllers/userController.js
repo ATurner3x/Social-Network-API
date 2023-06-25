@@ -78,3 +78,31 @@ const getUserById = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+// Add friend
+const addFriend = async (req, res) => {
+  try {
+    const { userId, friendId } = req.params;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { friends: friendId } },
+      { new: true }
+    );
+
+    const friend = await User.findByIdAndUpdate(
+      friendId,
+      { $addToSet: { friends: userId } },
+      { new: true }
+    );
+
+    if (!user || !friend) {
+      res.status(404).json({ message: 'User or friend not found' });
+      return;
+    }
+
+    res.json({ user, friend });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
