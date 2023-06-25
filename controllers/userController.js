@@ -7,12 +7,21 @@ const Thought = require('../models/thought');
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().populate('thoughts friends');
-    res.json(users);
+    const users = await User.find().populate('thoughts');
+
+    const customUsers = users.map(user => ({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      friendCount: user.friends.length,
+    }));
+
+    res.json(customUsers);
   } catch (err) {
     res.status(500).json(err);
   }
 };
+
 
 // Get user by ID
 
