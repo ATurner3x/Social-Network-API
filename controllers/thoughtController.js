@@ -26,3 +26,29 @@ const getThoughtById = async (req, res) => {
       res.status(500).json(err);
     }
   };
+
+  const createThought = async (req, res) => {
+    try {
+      const { thoughtText, username, userId } = req.body;
+  
+      const thought = await Thought.create({ thoughtText, username, userId });
+  
+      await User.findByIdAndUpdate(userId, { $push: { thoughts: thought._id } });
+  
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  };
+  
+  const updateThought = async (req, res) => {
+    try {
+      const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  };
