@@ -9,11 +9,15 @@ const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().populate('thoughts');
 
-    const customUsers = users.map(user => ({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      friendCount: user.friends.length,
+    const customUsers = await Promise.all(users.map(async (user) => {
+      const thoughtCount = await Thought.countDocuments({ username: user.username });
+      return {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        thoughtCount,
+        friendCount: user.friends.length,
+      };
     }));
 
     res.json(customUsers);
@@ -21,6 +25,7 @@ const getAllUsers = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
 
 
 // Get user by ID
