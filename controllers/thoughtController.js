@@ -14,3 +14,15 @@ const getAllThoughts = async (req, res) => {
   }
 };
 
+const getThoughtById = async (req, res) => {
+    try {
+      const thought = await Thought.findById(req.params.thoughtId).populate('reactions');
+      if (!thought) {
+        res.status(404).json({ message: 'Thought not found' });
+        return;
+      }
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  };
