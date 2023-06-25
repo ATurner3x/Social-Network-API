@@ -55,3 +55,26 @@ const getUserById = async (req, res) => {
       res.status(500).json(err);
     }
   };
+
+  // Delete user
+
+  const deleteUser = async (req, res) => {
+    try {
+      const deletedUser = await User.findByIdAndDelete(req.params.userId);
+  
+      if (!deletedUser) {
+        res.status(404).json({ message: 'User not found' });
+        return;
+      }
+
+        // Remove user's associated thoughts
+    await Thought.deleteMany({ userId: req.params.userId });
+
+    // Remove user from friend lists
+    await User.updateMany({}, { $pull: { friends: req.params.userId } });
+
+    res.json(deletedUser);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
