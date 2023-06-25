@@ -52,3 +52,28 @@ const getThoughtById = async (req, res) => {
       res.status(500).json(err);
     }
   };
+
+  const deleteThought = async (req, res) => {
+    try {
+      const deletedThought = await Thought.findByIdAndDelete(req.params.thoughtId);
+  
+      if (!deletedThought) {
+        res.status(404).json({ message: 'Thought not found' });
+        return;
+      }
+  
+      await User.findByIdAndUpdate(deletedThought.userId, { $pull: { thoughts: req.params.thoughtId } });
+  
+      res.json(deletedThought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  };
+  
+  module.exports = {
+    getAllThoughts,
+    getThoughtById,
+    createThought,
+    updateThought,
+    deleteThought,
+  };
